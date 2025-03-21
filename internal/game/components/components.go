@@ -9,10 +9,10 @@ import (
 const (
 	GameState   ecs.ComponentType = "game_state"
 	Player      ecs.ComponentType = "player"
+	Enemy       ecs.ComponentType = "enemy"
 	Position    ecs.ComponentType = "position"
 	Health      ecs.ComponentType = "health"
 	Velocity    ecs.ComponentType = "velocity"
-	Enemy       ecs.ComponentType = "enemy"
 	Tower       ecs.ComponentType = "tower"
 	Projectile  ecs.ComponentType = "projectile"
 	Path        ecs.ComponentType = "path"
@@ -37,6 +37,17 @@ type PlayerComponent struct {
 
 func (c PlayerComponent) GetType() ecs.ComponentType {
 	return Player
+}
+
+type EnemyComponent struct {
+	ecs.Component
+	Type   string
+	Speed  float64
+	Reward float64
+}
+
+func (c EnemyComponent) GetType() ecs.ComponentType {
+	return Enemy
 }
 
 type PositionComponent struct {
@@ -66,17 +77,6 @@ func (c VelocityComponent) GetType() ecs.ComponentType {
 	return Velocity
 }
 
-type EnemyComponent struct {
-	ecs.Component
-	Type   string
-	Speed  float64
-	Reward float64
-}
-
-func (c EnemyComponent) GetType() ecs.ComponentType {
-	return Enemy
-}
-
 type TowerComponent struct {
 	ecs.Component
 	Cooldown      time.Duration
@@ -90,7 +90,8 @@ func (c TowerComponent) GetType() ecs.ComponentType {
 
 type ProjectileComponent struct {
 	ecs.Component
-	Damage, Speed, Reward float64
+	TargetEntity  ecs.Entity
+	Damage, Speed float64
 }
 
 func (c ProjectileComponent) GetType() ecs.ComponentType {
