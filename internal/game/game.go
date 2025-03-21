@@ -3,6 +3,7 @@ package game
 import (
 	"log"
 	"os"
+	"time"
 
 	"ecstemplate/internal/display"
 	"ecstemplate/internal/game/components"
@@ -29,7 +30,7 @@ func NewGame() *Game {
 	componentAccess := components.NewComponentAccess(world)
 
 	// Register core ECS systems
-	world.AddSystem(&systems.SampleSystem{
+	world.AddSystem(&systems.EnemyMovementSystem{
 		ComponentAccess: componentAccess,
 	})
 
@@ -61,13 +62,29 @@ func (g *Game) registerComponentTypes() {
 func (g *Game) Run() {
 	g.world.Logger.Println("Starting game...")
 
+	targetFrameTime := time.Second / 60
+	lastUpdatedTime := time.Now()
+
 	// Main game loop
 	for {
+		// Start timing this fram
+		frameStartTime := time.Now()
+
+		// Calculate delta time
+		deltaTime := frameStartTime.Sub(lastUpdatedTime).Seconds()
+		lastUpdatedTime = frameStartTime
+
 		// Do displaying stuff
 
 		// Gather input
 
 		// Update the game state
-		g.world.Update()
+		g.world.Update(deltaTime)
+
+		// Sleep to maintain target frame rate
+		frameTime := time.Since(frameStartTime)
+		if sleepTime := targetFrameTime - frameTime; sleepTime > 0 {
+			time.Sleep(sleepTime)
+		}
 	}
 }

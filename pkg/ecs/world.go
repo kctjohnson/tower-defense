@@ -32,9 +32,9 @@ func (w *World) RemoveEntity(entity Entity) {
 	w.ComponentManager.RemoveAllComponents(entity)
 }
 
-func (w *World) Update() {
+func (w *World) Update(deltaTime float64) {
 	for _, system := range w.systems {
-		system.Update(w)
+		system.Update(w, deltaTime)
 	}
 
 	// Process events after all systems have updated
