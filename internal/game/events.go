@@ -8,6 +8,10 @@ import (
 	"ecstemplate/pkg/ecs"
 )
 
+func (g *Game) towerShotEventHandler(event ecs.EventInterface) {
+
+}
+
 func (g *Game) enemyReachedEndEventHandler(event ecs.EventInterface) {
 	// Determine the enemy damage
 	enemy, _ := g.componentAccess.GetEnemyComponent(event.Entity())

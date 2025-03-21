@@ -47,6 +47,7 @@ func (g *Game) Initialize() {
 	g.registerComponentTypes()
 
 	// Register event handlers
+	g.world.RegisterEventHandler(events.TowerShot, g.towerShotEventHandler)
 	g.world.RegisterEventHandler(events.EnemyReachedEnd, g.enemyReachedEndEventHandler)
 	g.world.RegisterEventHandler(events.GameOver, g.gameOverEventHandler)
 

@@ -71,3 +71,7 @@ func (c *ComponentAccess) GetWalletComponent(entity ecs.Entity) (*WalletComponen
 func (c *ComponentAccess) GetRenderableComponent(entity ecs.Entity) (*RenderableComponent, bool) {
 	return GetComponentT[*RenderableComponent](c.world, entity, Renderable)
 }
+
+func (c *ComponentAccess) GetShootIntentComponent(entity ecs.Entity) (*ShootIntentComponent, bool) {
+	return GetComponentT[*ShootIntentComponent](c.world, entity, ShootIntent)
+}

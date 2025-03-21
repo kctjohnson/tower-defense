@@ -1,20 +1,25 @@
 package components
 
-import "ecstemplate/pkg/ecs"
+import (
+	"time"
+
+	"ecstemplate/pkg/ecs"
+)
 
 const (
-	GameState  ecs.ComponentType = "game_state"
-	Player     ecs.ComponentType = "player"
-	Position   ecs.ComponentType = "position"
-	Health     ecs.ComponentType = "health"
-	Velocity   ecs.ComponentType = "velocity"
-	Enemy      ecs.ComponentType = "enemy"
-	Tower      ecs.ComponentType = "tower"
-	Projectile ecs.ComponentType = "projectile"
-	Path       ecs.ComponentType = "path"
-	PathFollow ecs.ComponentType = "path_follow"
-	Wallet     ecs.ComponentType = "wallet"
-	Renderable ecs.ComponentType = "renderable"
+	GameState   ecs.ComponentType = "game_state"
+	Player      ecs.ComponentType = "player"
+	Position    ecs.ComponentType = "position"
+	Health      ecs.ComponentType = "health"
+	Velocity    ecs.ComponentType = "velocity"
+	Enemy       ecs.ComponentType = "enemy"
+	Tower       ecs.ComponentType = "tower"
+	Projectile  ecs.ComponentType = "projectile"
+	Path        ecs.ComponentType = "path"
+	PathFollow  ecs.ComponentType = "path_follow"
+	Wallet      ecs.ComponentType = "wallet"
+	Renderable  ecs.ComponentType = "renderable"
+	ShootIntent ecs.ComponentType = "shoot_intent"
 )
 
 type GameStateComponent struct {
@@ -74,7 +79,9 @@ func (c EnemyComponent) GetType() ecs.ComponentType {
 
 type TowerComponent struct {
 	ecs.Component
-	Damage, Range, Cooldown, LastFired float64
+	Cooldown      time.Duration
+	LastFired     time.Time
+	Damage, Range float64
 }
 
 func (c TowerComponent) GetType() ecs.ComponentType {
@@ -128,6 +135,15 @@ func (c RenderableComponent) GetType() ecs.ComponentType {
 	return Renderable
 }
 
+type ShootIntentComponent struct {
+	ecs.Component
+	Shooter, Target ecs.Entity
+}
+
+func (c ShootIntentComponent) GetType() ecs.ComponentType {
+	return ShootIntent
+}
+
 var ComponentTypes = []ecs.ComponentType{
 	GameState,
 	Player,
@@ -141,4 +157,5 @@ var ComponentTypes = []ecs.ComponentType{
 	PathFollow,
 	Wallet,
 	Renderable,
+	ShootIntent,
 }
