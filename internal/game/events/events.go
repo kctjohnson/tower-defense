@@ -3,22 +3,36 @@ package events
 import "ecstemplate/pkg/ecs"
 
 const (
-	Sample ecs.EventType = "sample"
+	EnemyReachedEnd ecs.EventType = "enemy_reached_end"
+	GameOver        ecs.EventType = "game_over"
 )
 
-type SampleEvent struct {
-	Ent           ecs.Entity
-	DataBeingSent string
+type EnemyReachedEndEvent struct {
+	Ent ecs.Entity
 }
 
-func (e *SampleEvent) Type() ecs.EventType {
-	return Sample
+func (e *EnemyReachedEndEvent) Type() ecs.EventType {
+	return EnemyReachedEnd
 }
 
-func (e *SampleEvent) Entity() ecs.Entity {
+func (e *EnemyReachedEndEvent) Entity() ecs.Entity {
 	return e.Ent
 }
 
-func (e *SampleEvent) Data() any {
-	return map[string]any{"data": e.DataBeingSent}
+func (e *EnemyReachedEndEvent) Data() any {
+	return nil
+}
+
+type GameOverEvent struct{}
+
+func (e *GameOverEvent) Type() ecs.EventType {
+	return GameOver
+}
+
+func (e *GameOverEvent) Entity() ecs.Entity {
+	return -1
+}
+
+func (e *GameOverEvent) Data() any {
+	return nil
 }

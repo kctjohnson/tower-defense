@@ -47,7 +47,8 @@ func (g *Game) Initialize() {
 	g.registerComponentTypes()
 
 	// Register event handlers
-	g.world.RegisterEventHandler(events.Sample, g.sampleEventHandler)
+	g.world.RegisterEventHandler(events.EnemyReachedEnd, g.enemyReachedEndEventHandler)
+	g.world.RegisterEventHandler(events.GameOver, g.gameOverEventHandler)
 
 	// Create the entities
 }

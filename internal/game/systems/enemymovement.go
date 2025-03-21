@@ -5,6 +5,7 @@ import (
 	"math"
 
 	"ecstemplate/internal/game/components"
+	"ecstemplate/internal/game/events"
 	"ecstemplate/pkg/ecs"
 )
 
@@ -70,6 +71,9 @@ func (s *EnemyMovementSystem) Update(world *ecs.World, deltaTime float64) {
 				fmt.Printf("Enemy reached the end of the path\n")
 				// The enemy has reached the end of the path
 				// TODO: Queue the enemy reached end event
+				world.QueueEvent(&events.EnemyReachedEndEvent{
+					Ent: runnerEnt,
+				})
 				continue
 			}
 

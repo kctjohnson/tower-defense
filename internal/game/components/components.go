@@ -3,6 +3,8 @@ package components
 import "ecstemplate/pkg/ecs"
 
 const (
+	GameState  ecs.ComponentType = "game_state"
+	Player     ecs.ComponentType = "player"
 	Position   ecs.ComponentType = "position"
 	Health     ecs.ComponentType = "health"
 	Velocity   ecs.ComponentType = "velocity"
@@ -14,6 +16,23 @@ const (
 	Wallet     ecs.ComponentType = "wallet"
 	Renderable ecs.ComponentType = "renderable"
 )
+
+type GameStateComponent struct {
+	ecs.Component
+	GameOver bool
+}
+
+func (c GameStateComponent) GetType() ecs.ComponentType {
+	return GameState
+}
+
+type PlayerComponent struct {
+	ecs.Component
+}
+
+func (c PlayerComponent) GetType() ecs.ComponentType {
+	return Player
+}
 
 type PositionComponent struct {
 	ecs.Component
@@ -110,6 +129,8 @@ func (c RenderableComponent) GetType() ecs.ComponentType {
 }
 
 var ComponentTypes = []ecs.ComponentType{
+	GameState,
+	Player,
 	Position,
 	Health,
 	Velocity,

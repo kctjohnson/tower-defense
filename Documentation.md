@@ -2,14 +2,15 @@
 
 Enemy
 
+- Enemy
 - Position
 - Health
-- Enemy
 - PathFollow
 - Renderable
 
 Player
 
+- Player
 - Health
 - Wallet
 
