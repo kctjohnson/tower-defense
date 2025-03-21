@@ -8,7 +8,7 @@ import (
 	"ecstemplate/pkg/ecs"
 )
 
-func (g *Game) towerShotEventHandler(event ecs.EventInterface) {
+func (g *Game) projectileFiredEventHandler(event ecs.EventInterface) {
 
 }
 

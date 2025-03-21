@@ -59,7 +59,7 @@ func (s *TowerTargetingSystem) Update(world *ecs.World, deltaTime float64) {
 			)
 
 			// Queue the tower shot event
-			world.QueueEvent(&events.TowerShotEvent{
+			world.QueueEvent(&events.ProjectileFiredEvent{
 				Shooter: towerEnt,
 				Target:  closestEnemyEnt,
 			})

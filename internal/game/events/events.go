@@ -3,25 +3,25 @@ package events
 import "ecstemplate/pkg/ecs"
 
 const (
-	TowerShot       ecs.EventType = "tower_shot"
+	ProjectileFired ecs.EventType = "projectile_fired"
 	EnemyReachedEnd ecs.EventType = "enemy_reached_end"
 	GameOver        ecs.EventType = "game_over"
 )
 
-type TowerShotEvent struct {
+type ProjectileFiredEvent struct {
 	Shooter ecs.Entity
 	Target  ecs.Entity
 }
 
-func (e *TowerShotEvent) Type() ecs.EventType {
-	return TowerShot
+func (e *ProjectileFiredEvent) Type() ecs.EventType {
+	return ProjectileFired
 }
 
-func (e *TowerShotEvent) Entity() ecs.Entity {
+func (e *ProjectileFiredEvent) Entity() ecs.Entity {
 	return e.Shooter
 }
 
-func (e *TowerShotEvent) Data() any {
+func (e *ProjectileFiredEvent) Data() any {
 	return map[string]ecs.Entity{
 		"shooter": e.Shooter,
 		"target":  e.Target,
