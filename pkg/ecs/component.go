@@ -1,5 +1,7 @@
 package ecs
 
+import "slices"
+
 // ComponentInterface is a marker interface for all component types
 type ComponentInterface interface {
 	IsComponent()
@@ -91,8 +93,21 @@ func (cm *ComponentManager) GetAllEntitiesWithComponents(componentTypes []Compon
 
 	entityList := make([]Entity, 0, len(entities))
 	for entity, components := range entities {
+		// Make sure the entity has the right number of components
 		if len(components) == len(componentTypes) {
-			entityList = append(entityList, entity)
+			// Check if the entity has all of the specified components
+			valid := true
+			for comp := range components {
+				if !slices.Contains(componentTypes, comp) {
+					valid = false
+					break
+				}
+			}
+
+			// Add valid entities to the list
+			if valid {
+				entityList = append(entityList, entity)
+			}
 		}
 	}
 
