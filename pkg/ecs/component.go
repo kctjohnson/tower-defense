@@ -77,6 +77,28 @@ func (cm *ComponentManager) GetAllEntitiesWithComponent(componentType ComponentT
 	return []Entity{}
 }
 
+// Gets entities that have all of the specified components
+func (cm *ComponentManager) GetAllEntitiesWithComponents(componentTypes []ComponentType) []Entity {
+	entities := make(map[Entity]map[ComponentType]bool)
+	for _, componentType := range componentTypes {
+		for entity := range cm.components[componentType] {
+			if _, exists := entities[entity]; !exists {
+				entities[entity] = make(map[ComponentType]bool)
+			}
+			entities[entity][componentType] = true
+		}
+	}
+
+	entityList := make([]Entity, 0, len(entities))
+	for entity, components := range entities {
+		if len(components) == len(componentTypes) {
+			entityList = append(entityList, entity)
+		}
+	}
+
+	return entityList
+}
+
 func (cm *ComponentManager) RemoveAllComponents(entity Entity) {
 	for _, componentMap := range cm.components {
 		delete(componentMap, entity)
