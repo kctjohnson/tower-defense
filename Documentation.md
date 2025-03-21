@@ -16,11 +16,13 @@ Player
 
 Tower
 
+- Tower
 - Position
 - Renderable
 
 Projectile
 
+- Projectile
 - Position
 - Velocity
 - Renderable
