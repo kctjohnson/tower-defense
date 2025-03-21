@@ -52,6 +52,10 @@ func (c *ComponentAccess) GetPathComponent(entity ecs.Entity) (*PathComponent, b
 	return GetComponentT[*PathComponent](c.world, entity, Path)
 }
 
+func (c *ComponentAccess) GetPathFollowComponent(entity ecs.Entity) (*PathFollowComponent, bool) {
+	return GetComponentT[*PathFollowComponent](c.world, entity, PathFollow)
+}
+
 func (c *ComponentAccess) GetWalletComponent(entity ecs.Entity) (*WalletComponent, bool) {
 	return GetComponentT[*WalletComponent](c.world, entity, Wallet)
 }

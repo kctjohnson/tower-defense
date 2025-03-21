@@ -10,6 +10,7 @@ const (
 	Tower      ecs.ComponentType = "tower"
 	Projectile ecs.ComponentType = "projectile"
 	Path       ecs.ComponentType = "path"
+	PathFollow ecs.ComponentType = "path_follow"
 	Wallet     ecs.ComponentType = "wallet"
 	Renderable ecs.ComponentType = "renderable"
 )
@@ -72,11 +73,22 @@ func (c ProjectileComponent) GetType() ecs.ComponentType {
 
 type PathComponent struct {
 	ecs.Component
+	ID        string
 	Waypoints []PositionComponent
 }
 
 func (c PathComponent) GetType() ecs.ComponentType {
 	return Path
+}
+
+type PathFollowComponent struct {
+	ecs.Component
+	PathID        string // ID of the path to follow
+	WaypointIndex int    // Current waypoint
+}
+
+func (c PathFollowComponent) GetType() ecs.ComponentType {
+	return PathFollow
 }
 
 type WalletComponent struct {
@@ -105,6 +117,7 @@ var ComponentTypes = []ecs.ComponentType{
 	Tower,
 	Projectile,
 	Path,
+	PathFollow,
 	Wallet,
 	Renderable,
 }
