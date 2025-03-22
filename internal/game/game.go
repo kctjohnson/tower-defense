@@ -93,17 +93,34 @@ func (g *Game) Run() {
 		deltaTime := frameStartTime.Sub(lastUpdatedTime).Seconds()
 		lastUpdatedTime = frameStartTime
 
-		// Do displaying stuff
-
-		// Gather input
+		// Gather and process input
+		g.inputManager.Update()
+		g.inputManager.ProcessInputs(g.world, g.componentAccess)
 
 		// Update the game state
 		g.world.Update(deltaTime)
+
+		// Do displaying stuff
+		g.displayManager.Clear()
+		g.displayManager.Render(g.world, g.componentAccess)
+		g.displayManager.RenderUI(g.getGameInfo())
+		g.displayManager.Update()
 
 		// Sleep to maintain target frame rate
 		frameTime := time.Since(frameStartTime)
 		if sleepTime := targetFrameTime - frameTime; sleepTime > 0 {
 			time.Sleep(sleepTime)
 		}
+	}
+}
+
+func (g *Game) getGameInfo() display.GameInfo {
+	return display.GameInfo{
+		PlayerHealth: 100,
+		PlayerMoney:  100,
+		CurrentWave:  1,
+		WaveProgress: 0.5,
+		GameOver:     false,
+		Message:      "",
 	}
 }
