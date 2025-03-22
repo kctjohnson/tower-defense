@@ -7,6 +7,7 @@ import (
 )
 
 const (
+	Display     ecs.ComponentType = "display"
 	GameState   ecs.ComponentType = "game_state"
 	Player      ecs.ComponentType = "player"
 	Enemy       ecs.ComponentType = "enemy"
@@ -21,6 +22,15 @@ const (
 	Renderable  ecs.ComponentType = "renderable"
 	ShootIntent ecs.ComponentType = "shoot_intent"
 )
+
+type DisplayComponent struct {
+	ecs.Component
+	Width, Height int
+}
+
+func (c DisplayComponent) GetType() ecs.ComponentType {
+	return Display
+}
 
 type GameStateComponent struct {
 	ecs.Component
@@ -146,6 +156,7 @@ func (c ShootIntentComponent) GetType() ecs.ComponentType {
 }
 
 var ComponentTypes = []ecs.ComponentType{
+	Display,
 	GameState,
 	Player,
 	Position,

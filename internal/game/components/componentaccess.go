@@ -24,6 +24,10 @@ func GetComponentT[T ecs.ComponentInterface](
 	return component.(T), true
 }
 
+func (c *ComponentAccess) GetDisplayComponent(entity ecs.Entity) (*DisplayComponent, bool) {
+	return GetComponentT[*DisplayComponent](c.world, entity, Display)
+}
+
 func (c *ComponentAccess) GetGameStateComponent(entity ecs.Entity) (*GameStateComponent, bool) {
 	return GetComponentT[*GameStateComponent](c.world, entity, GameState)
 }

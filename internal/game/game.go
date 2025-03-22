@@ -33,6 +33,15 @@ func NewGame() *Game {
 	world.AddSystem(&systems.EnemyMovementSystem{
 		ComponentAccess: componentAccess,
 	})
+	world.AddSystem(&systems.ProjectileSystem{
+		ComponentAccess: componentAccess,
+	})
+	world.AddSystem(&systems.ProjectileCreationSystem{
+		ComponentAccess: componentAccess,
+	})
+	world.AddSystem(&systems.TowerTargetingSystem{
+		ComponentAccess: componentAccess,
+	})
 
 	return &Game{
 		world:           world,
