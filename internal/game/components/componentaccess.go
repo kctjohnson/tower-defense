@@ -60,6 +60,12 @@ func (c *ComponentAccess) GetTowerComponent(entity ecs.Entity) (*TowerComponent,
 	return GetComponentT[*TowerComponent](c.world, entity, Tower)
 }
 
+func (c *ComponentAccess) GetTowerTemplateComponent(
+	entity ecs.Entity,
+) (*TowerTemplateComponent, bool) {
+	return GetComponentT[*TowerTemplateComponent](c.world, entity, TowerTemplate)
+}
+
 func (c *ComponentAccess) GetProjectileComponent(entity ecs.Entity) (*ProjectileComponent, bool) {
 	return GetComponentT[*ProjectileComponent](c.world, entity, Projectile)
 }
@@ -82,4 +88,14 @@ func (c *ComponentAccess) GetRenderableComponent(entity ecs.Entity) (*Renderable
 
 func (c *ComponentAccess) GetShootIntentComponent(entity ecs.Entity) (*ShootIntentComponent, bool) {
 	return GetComponentT[*ShootIntentComponent](c.world, entity, ShootIntent)
+}
+
+func (c *ComponentAccess) GetBuyIntentComponent(entity ecs.Entity) (*BuyIntentComponent, bool) {
+	return GetComponentT[*BuyIntentComponent](c.world, entity, BuyIntent)
+}
+
+func (c *ComponentAccess) GetCreateTowerIntentComponent(
+	entity ecs.Entity,
+) (*CreateTowerIntentComponent, bool) {
+	return GetComponentT[*CreateTowerIntentComponent](c.world, entity, CreateTowerIntent)
 }

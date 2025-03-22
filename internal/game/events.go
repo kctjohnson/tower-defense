@@ -8,6 +8,10 @@ import (
 	"ecstemplate/pkg/ecs"
 )
 
+func (g *Game) towerCreatedEventHandler(event ecs.EventInterface) {
+
+}
+
 func (g *Game) enemyKilledEventHandler(event ecs.EventInterface) {
 
 }

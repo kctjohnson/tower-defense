@@ -45,6 +45,9 @@ func NewGame() *Game {
 	world.AddSystem(&systems.CollisionSystem{
 		ComponentAccess: componentAccess,
 	})
+	world.AddSystem(&systems.TowerFactorySystem{
+		ComponentAccess: componentAccess,
+	})
 
 	return &Game{
 		world:           world,
@@ -59,6 +62,7 @@ func (g *Game) Initialize() {
 	g.registerComponentTypes()
 
 	// Register event handlers
+	g.world.RegisterEventHandler(events.TowerCreated, g.towerCreatedEventHandler)
 	g.world.RegisterEventHandler(events.EnemyKilled, g.enemyKilledEventHandler)
 	g.world.RegisterEventHandler(events.ProjectileFired, g.projectileFiredEventHandler)
 	g.world.RegisterEventHandler(events.EnemyReachedEnd, g.enemyReachedEndEventHandler)

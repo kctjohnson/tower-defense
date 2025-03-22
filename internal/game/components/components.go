@@ -7,21 +7,24 @@ import (
 )
 
 const (
-	Display     ecs.ComponentType = "display"
-	GameState   ecs.ComponentType = "game_state"
-	Player      ecs.ComponentType = "player"
-	Enemy       ecs.ComponentType = "enemy"
-	BoundingBox ecs.ComponentType = "bounding_box"
-	Position    ecs.ComponentType = "position"
-	Health      ecs.ComponentType = "health"
-	Velocity    ecs.ComponentType = "velocity"
-	Tower       ecs.ComponentType = "tower"
-	Projectile  ecs.ComponentType = "projectile"
-	Path        ecs.ComponentType = "path"
-	PathFollow  ecs.ComponentType = "path_follow"
-	Wallet      ecs.ComponentType = "wallet"
-	Renderable  ecs.ComponentType = "renderable"
-	ShootIntent ecs.ComponentType = "shoot_intent"
+	Display           ecs.ComponentType = "display"
+	GameState         ecs.ComponentType = "game_state"
+	Player            ecs.ComponentType = "player"
+	Enemy             ecs.ComponentType = "enemy"
+	BoundingBox       ecs.ComponentType = "bounding_box"
+	Position          ecs.ComponentType = "position"
+	Health            ecs.ComponentType = "health"
+	Velocity          ecs.ComponentType = "velocity"
+	Tower             ecs.ComponentType = "tower"
+	TowerTemplate     ecs.ComponentType = "tower_template"
+	Projectile        ecs.ComponentType = "projectile"
+	Path              ecs.ComponentType = "path"
+	PathFollow        ecs.ComponentType = "path_follow"
+	Wallet            ecs.ComponentType = "wallet"
+	Renderable        ecs.ComponentType = "renderable"
+	ShootIntent       ecs.ComponentType = "shoot_intent"
+	BuyIntent         ecs.ComponentType = "buy_intent"
+	CreateTowerIntent ecs.ComponentType = "create_tower_intent"
 )
 
 type DisplayComponent struct {
@@ -109,6 +112,24 @@ func (c TowerComponent) GetType() ecs.ComponentType {
 	return Tower
 }
 
+type TowerType string
+
+const (
+	BasicTower  TowerType = "basic"
+	MediumTower TowerType = "medium"
+	HeavyTower  TowerType = "heavy"
+)
+
+type TowerTemplateComponent struct {
+	ecs.Component
+	Type TowerType
+	Cost float64
+}
+
+func (c TowerTemplateComponent) GetType() ecs.ComponentType {
+	return TowerTemplate
+}
+
 type ProjectileComponent struct {
 	ecs.Component
 	TargetEntity  ecs.Entity
@@ -166,6 +187,25 @@ func (c ShootIntentComponent) GetType() ecs.ComponentType {
 	return ShootIntent
 }
 
+type BuyIntentComponent struct {
+	ecs.Component
+	// We can use this for upgrades later
+}
+
+func (c BuyIntentComponent) GetType() ecs.ComponentType {
+	return BuyIntent
+}
+
+type CreateTowerIntentComponent struct {
+	ecs.Component
+	TowerType TowerType
+	Position  PositionComponent
+}
+
+func (c CreateTowerIntentComponent) GetType() ecs.ComponentType {
+	return CreateTowerIntent
+}
+
 var ComponentTypes = []ecs.ComponentType{
 	Display,
 	GameState,
@@ -176,10 +216,13 @@ var ComponentTypes = []ecs.ComponentType{
 	Health,
 	Velocity,
 	Tower,
+	TowerTemplate,
 	Projectile,
 	Path,
 	PathFollow,
 	Wallet,
 	Renderable,
 	ShootIntent,
+	BuyIntent,
+	CreateTowerIntent,
 }

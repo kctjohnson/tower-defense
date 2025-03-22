@@ -1,13 +1,37 @@
 package events
 
-import "ecstemplate/pkg/ecs"
+import (
+	"ecstemplate/internal/game/components"
+	"ecstemplate/pkg/ecs"
+)
 
 const (
+	TowerCreated    ecs.EventType = "tower_created"
 	EnemyKilled     ecs.EventType = "enemy_killed"
 	ProjectileFired ecs.EventType = "projectile_fired"
 	EnemyReachedEnd ecs.EventType = "enemy_reached_end"
 	GameOver        ecs.EventType = "game_over"
 )
+
+type TowerCreatedEvent struct {
+	TowerType   components.TowerType
+	TowerEntity ecs.Entity
+}
+
+func (e *TowerCreatedEvent) Type() ecs.EventType {
+	return TowerCreated
+}
+
+func (e *TowerCreatedEvent) Entity() ecs.Entity {
+	return e.TowerEntity
+}
+
+func (e *TowerCreatedEvent) Data() any {
+	return map[string]any{
+		"towerType":   e.TowerType,
+		"towerEntity": e.TowerEntity,
+	}
+}
 
 type EnemyKilledEvent struct {
 	EnemyType string
