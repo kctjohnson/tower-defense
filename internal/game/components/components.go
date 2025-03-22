@@ -11,6 +11,7 @@ const (
 	GameState   ecs.ComponentType = "game_state"
 	Player      ecs.ComponentType = "player"
 	Enemy       ecs.ComponentType = "enemy"
+	BoundingBox ecs.ComponentType = "bounding_box"
 	Position    ecs.ComponentType = "position"
 	Health      ecs.ComponentType = "health"
 	Velocity    ecs.ComponentType = "velocity"
@@ -58,6 +59,16 @@ type EnemyComponent struct {
 
 func (c EnemyComponent) GetType() ecs.ComponentType {
 	return Enemy
+}
+
+// Bounding box pairs with the Position component to define the size of an entity. Position is the center of the bounding box
+type BoundingBoxComponent struct {
+	ecs.Component
+	Width, Height float64
+}
+
+func (c BoundingBoxComponent) GetType() ecs.ComponentType {
+	return BoundingBox
 }
 
 type PositionComponent struct {
@@ -159,10 +170,11 @@ var ComponentTypes = []ecs.ComponentType{
 	Display,
 	GameState,
 	Player,
+	Enemy,
+	BoundingBox,
 	Position,
 	Health,
 	Velocity,
-	Enemy,
 	Tower,
 	Projectile,
 	Path,

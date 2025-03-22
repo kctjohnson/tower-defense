@@ -36,6 +36,14 @@ func (c *ComponentAccess) GetPlayerComponent(entity ecs.Entity) (*PlayerComponen
 	return GetComponentT[*PlayerComponent](c.world, entity, Player)
 }
 
+func (c *ComponentAccess) GetEnemyComponent(entity ecs.Entity) (*EnemyComponent, bool) {
+	return GetComponentT[*EnemyComponent](c.world, entity, Enemy)
+}
+
+func (c *ComponentAccess) GetBoundingBoxComponent(entity ecs.Entity) (*BoundingBoxComponent, bool) {
+	return GetComponentT[*BoundingBoxComponent](c.world, entity, BoundingBox)
+}
+
 func (c *ComponentAccess) GetPositionComponent(entity ecs.Entity) (*PositionComponent, bool) {
 	return GetComponentT[*PositionComponent](c.world, entity, Position)
 }
@@ -46,10 +54,6 @@ func (c *ComponentAccess) GetHealthComponent(entity ecs.Entity) (*HealthComponen
 
 func (c *ComponentAccess) GetVelocityComponent(entity ecs.Entity) (*VelocityComponent, bool) {
 	return GetComponentT[*VelocityComponent](c.world, entity, Velocity)
-}
-
-func (c *ComponentAccess) GetEnemyComponent(entity ecs.Entity) (*EnemyComponent, bool) {
-	return GetComponentT[*EnemyComponent](c.world, entity, Enemy)
 }
 
 func (c *ComponentAccess) GetTowerComponent(entity ecs.Entity) (*TowerComponent, bool) {

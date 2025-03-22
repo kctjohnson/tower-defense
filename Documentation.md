@@ -3,6 +3,7 @@
 Enemy
 
 - Enemy
+- BoundingBox
 - Position
 - Health
 - PathFollow
@@ -23,6 +24,7 @@ Tower
 Projectile
 
 - Projectile
+- BoundingBox
 - Position
 - Velocity
 - Renderable

@@ -8,6 +8,10 @@ import (
 	"ecstemplate/pkg/ecs"
 )
 
+func (g *Game) enemyKilledEventHandler(event ecs.EventInterface) {
+
+}
+
 func (g *Game) projectileFiredEventHandler(event ecs.EventInterface) {
 
 }

@@ -3,10 +3,31 @@ package events
 import "ecstemplate/pkg/ecs"
 
 const (
+	EnemyKilled     ecs.EventType = "enemy_killed"
 	ProjectileFired ecs.EventType = "projectile_fired"
 	EnemyReachedEnd ecs.EventType = "enemy_reached_end"
 	GameOver        ecs.EventType = "game_over"
 )
+
+type EnemyKilledEvent struct {
+	EnemyType string
+	Reward    float64
+}
+
+func (e *EnemyKilledEvent) Type() ecs.EventType {
+	return EnemyKilled
+}
+
+func (e *EnemyKilledEvent) Entity() ecs.Entity {
+	return -1
+}
+
+func (e *EnemyKilledEvent) Data() any {
+	return map[string]any{
+		"enemyType": e.EnemyType,
+		"reward":    e.Reward,
+	}
+}
 
 type ProjectileFiredEvent struct {
 	Shooter ecs.Entity
