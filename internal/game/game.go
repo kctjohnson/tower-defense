@@ -9,7 +9,7 @@ import (
 	"ecstemplate/internal/game/components"
 	"ecstemplate/internal/game/events"
 	"ecstemplate/internal/game/systems"
-	"ecstemplate/internal/game/ui/console"
+	"ecstemplate/internal/game/ui/teaui"
 	"ecstemplate/internal/input"
 	"ecstemplate/pkg/ecs"
 )
@@ -51,13 +51,22 @@ func NewGame() *Game {
 
 	return &Game{
 		world:           world,
-		inputManager:    &console.ConsoleInputManager{},
-		displayManager:  &console.ConsoleDisplayManager{},
+		inputManager:    &teaui.InputManager{},
+		displayManager:  &teaui.DisplayManager{},
 		componentAccess: componentAccess,
 	}
 }
 
-func (g *Game) Initialize() {
+func (g *Game) Initialize(width, height int) {
+	// Initialize the display and input managers
+	if err := g.displayManager.Initialize(width, height); err != nil {
+		g.world.Logger.Fatalf("Failed to initialize display manager: %v", err)
+	}
+
+	if err := g.inputManager.Initialize(); err != nil {
+		g.world.Logger.Fatalf("Failed to initialize input manager: %v", err)
+	}
+
 	// Register component types
 	g.registerComponentTypes()
 
@@ -78,6 +87,21 @@ func (g *Game) registerComponentTypes() {
 	}
 }
 
+func (g *Game) Update(deltaTime float64) {
+	// Gather and process input
+	g.inputManager.Update()
+	g.inputManager.ProcessInputs(g.world, g.componentAccess)
+
+	// Update the game state
+	g.world.Update(deltaTime)
+
+	// Do displaying stuff
+	g.displayManager.Clear()
+	g.displayManager.Render(g.world, g.componentAccess)
+	g.displayManager.RenderUI(g.getGameInfo())
+	g.displayManager.Update()
+}
+
 func (g *Game) Run() {
 	g.world.Logger.Println("Starting game...")
 
@@ -93,18 +117,8 @@ func (g *Game) Run() {
 		deltaTime := frameStartTime.Sub(lastUpdatedTime).Seconds()
 		lastUpdatedTime = frameStartTime
 
-		// Gather and process input
-		g.inputManager.Update()
-		g.inputManager.ProcessInputs(g.world, g.componentAccess)
-
-		// Update the game state
-		g.world.Update(deltaTime)
-
-		// Do displaying stuff
-		g.displayManager.Clear()
-		g.displayManager.Render(g.world, g.componentAccess)
-		g.displayManager.RenderUI(g.getGameInfo())
-		g.displayManager.Update()
+		// Update the game
+		g.Update(deltaTime)
 
 		// Sleep to maintain target frame rate
 		frameTime := time.Since(frameStartTime)
@@ -112,6 +126,14 @@ func (g *Game) Run() {
 			time.Sleep(sleepTime)
 		}
 	}
+}
+
+func (g *Game) GetDisplayManager() display.DisplayManager {
+	return g.displayManager
+}
+
+func (g *Game) GetInputManager() input.InputManager {
+	return g.inputManager
 }
 
 func (g *Game) getGameInfo() display.GameInfo {

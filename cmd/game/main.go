@@ -1,6 +1,8 @@
 package main
 
-import "ecstemplate/internal/game"
+import (
+	"ecstemplate/internal/game"
+)
 
 func main() {
 	g := game.NewGame()
