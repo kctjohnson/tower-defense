@@ -1,6 +1,7 @@
 package teaui
 
 import (
+	"fmt"
 	"math"
 
 	"github.com/charmbracelet/lipgloss"
@@ -127,6 +128,11 @@ func (dm *DisplayManager) RenderEntity(
 
 func (dm *DisplayManager) RenderUI(gameInfo display.GameInfo) {
 	// Just display it over the top for now
+	dm.writeString(0, 0, gameInfo.Message)
+	dm.writeString(0, 1, fmt.Sprintf("Health: %0.2f", gameInfo.PlayerHealth))
+	dm.writeString(0, 2, fmt.Sprintf("Money: %0.2f", gameInfo.PlayerMoney))
+	dm.writeString(0, 3, fmt.Sprintf("Wave: %d", gameInfo.CurrentWave))
+	dm.writeString(0, 4, fmt.Sprintf("Progress: %0.2f%%", gameInfo.WaveProgress*100))
 }
 
 func (dm *DisplayManager) Update() {
@@ -149,4 +155,14 @@ func (dm *DisplayManager) Resize(width, height int) {
 		dm.buffer.Cells[i] = make([]Cell, width)
 	}
 	dm.Clear()
+}
+
+func (dm *DisplayManager) writeString(x, y int, str string) {
+	for i, r := range str {
+		dm.buffer.Cells[y][x+i] = Cell{
+			Symbol: r,
+			BG:     lipgloss.Color("#000000"),
+			FG:     lipgloss.Color("#CCCCCC"),
+		}
+	}
 }
