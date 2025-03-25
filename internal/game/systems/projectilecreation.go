@@ -30,7 +30,7 @@ func (s *ProjectileCreationSystem) Update(world *ecs.World, deltaTime float64) {
 		angle := calcAngleBetweenPoints(*shooterPos, *targetPos)
 
 		// Create the projectile entity with the velocity vector
-		baseProjectileSpeed := 2.0 // This should be a constant
+		baseProjectileSpeed := 8.0 // This should be a constant
 		projectileEnt := world.EntityManager.CreateEntity()
 		world.ComponentManager.AddComponent(
 			projectileEnt,
