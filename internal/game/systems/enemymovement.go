@@ -1,7 +1,6 @@
 package systems
 
 import (
-	"fmt"
 	"math"
 
 	"ecstemplate/internal/game/components"
@@ -53,6 +52,14 @@ func (s *EnemyMovementSystem) Update(world *ecs.World, deltaTime float64) {
 			return
 		}
 
+		if pathFollow.WaypointIndex >= len(path.Waypoints)-1 {
+			// The enemy has reached the end of the path
+			world.QueueEvent(&events.EnemyReachedEndEvent{
+				Ent: runnerEnt,
+			})
+			continue
+		}
+
 		// Get the length of the current path
 		startPoint := path.Waypoints[pathFollow.WaypointIndex]
 		endPoint := path.Waypoints[pathFollow.WaypointIndex+1]
@@ -68,9 +75,7 @@ func (s *EnemyMovementSystem) Update(world *ecs.World, deltaTime float64) {
 		if distanceTraveled >= distanceToWaypoint {
 			pathFollow.WaypointIndex++
 			if pathFollow.WaypointIndex >= len(path.Waypoints) {
-				fmt.Printf("Enemy reached the end of the path\n")
 				// The enemy has reached the end of the path
-				// TODO: Queue the enemy reached end event
 				world.QueueEvent(&events.EnemyReachedEndEvent{
 					Ent: runnerEnt,
 				})
