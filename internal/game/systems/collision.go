@@ -20,13 +20,21 @@ func (s *CollisionSystem) Update(world *ecs.World, deltaTime float64) {
 
 	// Loop through all projectiles
 	for _, projectileEnt := range projectileEnts {
-		projPos, _ := s.ComponentAccess.GetPositionComponent(projectileEnt)
-		projBoundingBox, _ := s.ComponentAccess.GetBoundingBoxComponent(projectileEnt)
+		projPos, h1 := s.ComponentAccess.GetPositionComponent(projectileEnt)
+		projBoundingBox, h2 := s.ComponentAccess.GetBoundingBoxComponent(projectileEnt)
+
+		if h1 == false || h2 == false {
+			continue
+		}
 
 		// Loop through all enemies
 		for _, enemyEnt := range enemyEnts {
-			enemyPos, _ := s.ComponentAccess.GetPositionComponent(enemyEnt)
-			enemyBoundingBox, _ := s.ComponentAccess.GetBoundingBoxComponent(enemyEnt)
+			enemyPos, h3 := s.ComponentAccess.GetPositionComponent(enemyEnt)
+			enemyBoundingBox, h4 := s.ComponentAccess.GetBoundingBoxComponent(enemyEnt)
+
+			if h3 == false || h4 == false {
+				continue
+			}
 
 			// Check if the projectile is colliding with the enemy
 			if isColliding(*projPos, *enemyPos, *projBoundingBox, *enemyBoundingBox) {
