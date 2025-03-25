@@ -48,6 +48,7 @@ func NewGame() *Game {
 	world.AddSystem(&systems.TowerFactorySystem{
 		ComponentAccess: componentAccess,
 	})
+	world.AddSystem(systems.NewWaveSystem(componentAccess, time.Second*12))
 
 	return &Game{
 		world:           world,
@@ -178,9 +179,9 @@ func (g *Game) Initialize(width, height int) {
 	)
 
 	// Create a tower
-	towerEnt := g.world.EntityManager.CreateEntity()
+	towerEnt1 := g.world.EntityManager.CreateEntity()
 	g.world.ComponentManager.AddComponent(
-		towerEnt,
+		towerEnt1,
 		components.Tower,
 		&components.TowerComponent{
 			Cooldown:  time.Second,
@@ -190,15 +191,42 @@ func (g *Game) Initialize(width, height int) {
 		},
 	)
 	g.world.ComponentManager.AddComponent(
-		towerEnt,
+		towerEnt1,
 		components.Position,
 		&components.PositionComponent{
-			X: 14,
-			Y: 6,
+			X: 8,
+			Y: 9,
 		},
 	)
 	g.world.ComponentManager.AddComponent(
-		towerEnt,
+		towerEnt1,
+		components.Renderable,
+		&components.RenderableComponent{
+			Symbol: "T",
+		},
+	)
+
+	towerEnt2 := g.world.EntityManager.CreateEntity()
+	g.world.ComponentManager.AddComponent(
+		towerEnt2,
+		components.Tower,
+		&components.TowerComponent{
+			Cooldown:  time.Second,
+			LastFired: time.Now(),
+			Damage:    1,
+			Range:     20,
+		},
+	)
+	g.world.ComponentManager.AddComponent(
+		towerEnt2,
+		components.Position,
+		&components.PositionComponent{
+			X: 20,
+			Y: 9,
+		},
+	)
+	g.world.ComponentManager.AddComponent(
+		towerEnt2,
 		components.Renderable,
 		&components.RenderableComponent{
 			Symbol: "T",
