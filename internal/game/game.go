@@ -77,6 +77,17 @@ func (g *Game) Initialize(width, height int) {
 	g.world.RegisterEventHandler(events.EnemyReachedEnd, g.enemyReachedEndEventHandler)
 	g.world.RegisterEventHandler(events.GameOver, g.gameOverEventHandler)
 
+	// Create the display
+	displayEnt := g.world.EntityManager.CreateEntity()
+	g.world.ComponentManager.AddComponent(
+		displayEnt,
+		components.Display,
+		&components.DisplayComponent{
+			Width:  width,
+			Height: height,
+		},
+	)
+
 	// Create the player
 	playerEnt := g.world.EntityManager.CreateEntity()
 	g.world.ComponentManager.AddComponent(
@@ -167,6 +178,33 @@ func (g *Game) Initialize(width, height int) {
 	)
 
 	// Create a tower
+	towerEnt := g.world.EntityManager.CreateEntity()
+	g.world.ComponentManager.AddComponent(
+		towerEnt,
+		components.Tower,
+		&components.TowerComponent{
+			Cooldown:  time.Second,
+			LastFired: time.Now(),
+			Damage:    1,
+			Range:     20,
+		},
+	)
+	g.world.ComponentManager.AddComponent(
+		towerEnt,
+		components.Position,
+		&components.PositionComponent{
+			X: 14,
+			Y: 6,
+		},
+	)
+	g.world.ComponentManager.AddComponent(
+		towerEnt,
+		components.Renderable,
+		&components.RenderableComponent{
+			Symbol: "T",
+		},
+	)
+
 }
 
 func (g *Game) registerComponentTypes() {

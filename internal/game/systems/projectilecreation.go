@@ -51,6 +51,14 @@ func (s *ProjectileCreationSystem) Update(world *ecs.World, deltaTime float64) {
 		)
 		world.ComponentManager.AddComponent(
 			projectileEnt,
+			components.BoundingBox,
+			&components.BoundingBoxComponent{
+				Width:  1,
+				Height: 1,
+			},
+		)
+		world.ComponentManager.AddComponent(
+			projectileEnt,
 			components.Velocity,
 			&components.VelocityComponent{
 				X: math.Cos(angle) * baseProjectileSpeed,
