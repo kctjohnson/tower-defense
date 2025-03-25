@@ -264,11 +264,16 @@ func (g *Game) GetInputManager() input.InputManager {
 }
 
 func (g *Game) getGameInfo() display.GameInfo {
+	// Get the player health and money
+	playerEnt := g.world.ComponentManager.GetAllEntitiesWithComponent(components.Player)[0]
+	health, _ := g.componentAccess.GetHealthComponent(playerEnt)
+	wallet, _ := g.componentAccess.GetWalletComponent(playerEnt)
+
 	return display.GameInfo{
-		PlayerHealth: 100,
-		PlayerMoney:  100,
+		PlayerHealth: health.Current,
+		PlayerMoney:  wallet.Money,
 		CurrentWave:  1,
-		WaveProgress: 0.5,
+		WaveProgress: 0.0,
 		GameOver:     false,
 		Message:      "",
 	}
