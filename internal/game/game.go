@@ -77,7 +77,96 @@ func (g *Game) Initialize(width, height int) {
 	g.world.RegisterEventHandler(events.EnemyReachedEnd, g.enemyReachedEndEventHandler)
 	g.world.RegisterEventHandler(events.GameOver, g.gameOverEventHandler)
 
-	// Create the entities
+	// Create the player
+	playerEnt := g.world.EntityManager.CreateEntity()
+	g.world.ComponentManager.AddComponent(
+		playerEnt,
+		components.Player,
+		&components.PlayerComponent{},
+	)
+	g.world.ComponentManager.AddComponent(
+		playerEnt,
+		components.Health,
+		&components.HealthComponent{
+			Current: 50,
+			Max:     50,
+		},
+	)
+	g.world.ComponentManager.AddComponent(
+		playerEnt,
+		components.Wallet,
+		&components.WalletComponent{
+			Money: 0,
+		},
+	)
+
+	// Create the path
+	pathEnt := g.world.EntityManager.CreateEntity()
+	g.world.ComponentManager.AddComponent(
+		pathEnt,
+		components.Path,
+		&components.PathComponent{
+			ID: "starting-path",
+			Waypoints: []components.PositionComponent{
+				{X: 5, Y: 5},
+				{X: 15, Y: 5},
+				{X: 15, Y: 15},
+			},
+		},
+	)
+
+	// Create an enemy on the path
+	enemyEnt := g.world.EntityManager.CreateEntity()
+	g.world.ComponentManager.AddComponent(
+		enemyEnt,
+		components.Enemy,
+		&components.EnemyComponent{
+			Type:   "basic",
+			Speed:  1,
+			Reward: 10,
+		},
+	)
+	g.world.ComponentManager.AddComponent(
+		enemyEnt,
+		components.BoundingBox,
+		&components.BoundingBoxComponent{
+			Width:  1,
+			Height: 1,
+		},
+	)
+	g.world.ComponentManager.AddComponent(
+		enemyEnt,
+		components.Position,
+		&components.PositionComponent{
+			X: 5,
+			Y: 5,
+		},
+	)
+	g.world.ComponentManager.AddComponent(
+		enemyEnt,
+		components.Health,
+		&components.HealthComponent{
+			Current: 10,
+			Max:     10,
+		},
+	)
+	g.world.ComponentManager.AddComponent(
+		enemyEnt,
+		components.PathFollow,
+		&components.PathFollowComponent{
+			PathID:        "starting-path",
+			WaypointIndex: 0,
+		},
+	)
+	g.world.ComponentManager.AddComponent(
+		enemyEnt,
+		components.Renderable,
+		&components.RenderableComponent{
+			Symbol: "E",
+		},
+	)
+
+	// Create a tower
 }
 
 func (g *Game) registerComponentTypes() {
