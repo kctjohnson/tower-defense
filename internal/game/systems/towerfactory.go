@@ -14,6 +14,17 @@ type TowerFactorySystem struct {
 	Templates       map[components.TowerType]ecs.Entity
 }
 
+func NewTowerFactorySystem(
+	world *ecs.World,
+	componentAccess *components.ComponentAccess,
+) *TowerFactorySystem {
+	tfs := &TowerFactorySystem{
+		ComponentAccess: componentAccess,
+	}
+	tfs.Initialize(world)
+	return tfs
+}
+
 func (s *TowerFactorySystem) Initialize(world *ecs.World) {
 	s.Templates = make(map[components.TowerType]ecs.Entity)
 
@@ -30,7 +41,7 @@ func (s *TowerFactorySystem) Initialize(world *ecs.World) {
 		s.Templates[components.BasicTower],
 		components.Tower,
 		&components.TowerComponent{
-			Cooldown:  3,
+			Cooldown:  time.Second,
 			LastFired: time.Now(),
 			Damage:    1,
 			Range:     5,
@@ -50,7 +61,7 @@ func (s *TowerFactorySystem) Initialize(world *ecs.World) {
 		s.Templates[components.MediumTower],
 		components.Tower,
 		&components.TowerComponent{
-			Cooldown:  2,
+			Cooldown:  time.Second / 2,
 			LastFired: time.Now(),
 			Damage:    2,
 			Range:     7,
@@ -70,7 +81,7 @@ func (s *TowerFactorySystem) Initialize(world *ecs.World) {
 		s.Templates[components.HeavyTower],
 		components.Tower,
 		&components.TowerComponent{
-			Cooldown:  1,
+			Cooldown:  time.Second / 4,
 			LastFired: time.Now(),
 			Damage:    3,
 			Range:     10,
@@ -159,6 +170,13 @@ func (s *TowerFactorySystem) createTower(
 		tower,
 		components.Position,
 		&position,
+	)
+	world.ComponentManager.AddComponent(
+		tower,
+		components.Renderable,
+		&components.RenderableComponent{
+			Symbol: "T",
+		},
 	)
 
 	return tower, nil

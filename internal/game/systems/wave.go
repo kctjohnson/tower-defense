@@ -87,6 +87,8 @@ func (s *WaveSystem) Update(world *ecs.World, deltaTime float64) {
 
 		// Reset the last spawn time
 		s.lastSpawnTime = time.Now()
-		s.cooldown -= 50 * time.Millisecond
+		if s.cooldown > time.Second/2 {
+			s.cooldown -= 200 * time.Millisecond
+		}
 	}
 }

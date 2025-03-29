@@ -45,15 +45,20 @@ func NewGame() *Game {
 	world.AddSystem(&systems.CollisionSystem{
 		ComponentAccess: componentAccess,
 	})
-	world.AddSystem(&systems.TowerFactorySystem{
-		ComponentAccess: componentAccess,
-	})
-	world.AddSystem(systems.NewWaveSystem(componentAccess, time.Second*12))
+	world.AddSystem(systems.NewTowerFactorySystem(world, componentAccess))
+	world.AddSystem(systems.NewWaveSystem(componentAccess, time.Second*7))
+
+	inputManager := &teaui.InputManager{}
+	inputManager.Initialize()
+	inputManager.SetCursorBounds(0, 0, 80, 24)
+
+	displayManager := &teaui.DisplayManager{}
+	displayManager.Initialize(80, 24)
 
 	return &Game{
 		world:           world,
-		inputManager:    &teaui.InputManager{},
-		displayManager:  &teaui.DisplayManager{},
+		inputManager:    inputManager,
+		displayManager:  displayManager,
 		componentAccess: componentAccess,
 	}
 }
@@ -86,6 +91,22 @@ func (g *Game) Initialize(width, height int) {
 		&components.DisplayComponent{
 			Width:  width,
 			Height: height,
+		},
+	)
+
+	// Create the cursor
+	cursorEnt := g.world.EntityManager.CreateEntity()
+	g.world.ComponentManager.AddComponent(
+		cursorEnt,
+		components.Cursor,
+		&components.CursorComponent{},
+	)
+	g.world.ComponentManager.AddComponent(
+		cursorEnt,
+		components.Position,
+		&components.PositionComponent{
+			X: 0,
+			Y: 0,
 		},
 	)
 

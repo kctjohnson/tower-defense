@@ -105,6 +105,23 @@ func (dm *DisplayManager) Render(
 		pos, _ := componentAccess.GetPositionComponent(renderable)
 		dm.RenderEntity(renderable, pos, rend)
 	}
+
+	// Render the cursor
+	cursorEnts := world.ComponentManager.GetAllEntitiesWithComponent(components.Cursor)
+	if len(cursorEnts) == 1 {
+		cursorEnt := cursorEnts[0]
+		cursorPos, _ := componentAccess.GetPositionComponent(cursorEnt)
+		x := int(math.Round(cursorPos.X))
+		y := int(math.Round(cursorPos.Y))
+
+		if x >= 0 && x < dm.buffer.Width && y >= 0 && y < dm.buffer.Height {
+			dm.buffer.Cells[y][x] = Cell{
+				Symbol: 'X',
+				BG:     lipgloss.Color("#000000"),
+				FG:     lipgloss.Color("#FF0000"),
+			}
+		}
+	}
 }
 
 func (dm *DisplayManager) RenderEntity(

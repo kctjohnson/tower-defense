@@ -8,6 +8,7 @@ import (
 
 const (
 	Display           ecs.ComponentType = "display"
+	Cursor            ecs.ComponentType = "cursor"
 	GameState         ecs.ComponentType = "game_state"
 	Player            ecs.ComponentType = "player"
 	Enemy             ecs.ComponentType = "enemy"
@@ -34,6 +35,14 @@ type DisplayComponent struct {
 
 func (c DisplayComponent) GetType() ecs.ComponentType {
 	return Display
+}
+
+type CursorComponent struct {
+	ecs.Component
+}
+
+func (c CursorComponent) GetType() ecs.ComponentType {
+	return Cursor
 }
 
 type GameStateComponent struct {
@@ -208,6 +217,7 @@ func (c CreateTowerIntentComponent) GetType() ecs.ComponentType {
 
 var ComponentTypes = []ecs.ComponentType{
 	Display,
+	Cursor,
 	GameState,
 	Player,
 	Enemy,

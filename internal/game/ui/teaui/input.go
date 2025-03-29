@@ -114,6 +114,34 @@ func (im *InputManager) ProcessInputs(
 		// Reset placement mode
 		im.state.IsPlacing = false
 	}
+
+	cursorPos := im.getCursorPosComp(world, componentAccess)
+	if im.state.Actions[input.ActionMoveLeft] {
+		if cursorPos != nil {
+			cursorPos.X = max(float64(im.minX), cursorPos.X-1)
+		}
+	}
+
+	if im.state.Actions[input.ActionMoveRight] {
+		if cursorPos != nil {
+			cursorPos.X = min(float64(im.maxX), cursorPos.X+1)
+		}
+	}
+
+	if im.state.Actions[input.ActionMoveUp] {
+		if cursorPos != nil {
+			cursorPos.Y = max(float64(im.minY), cursorPos.Y-1)
+		}
+	}
+
+	if im.state.Actions[input.ActionMoveDown] {
+		if cursorPos != nil {
+			cursorPos.Y = min(float64(im.maxY), cursorPos.Y+1)
+		}
+	}
+
+	im.state.CursorX = int(cursorPos.X)
+	im.state.CursorY = int(cursorPos.Y)
 }
 
 func (im *InputManager) SetCursorBounds(minX, minY, maxX, maxY int) {
@@ -125,4 +153,21 @@ func (im *InputManager) SetCursorBounds(minX, minY, maxX, maxY int) {
 
 func (im *InputManager) Shutdown() {
 	// no-op, nothing to clean up
+}
+
+func (im *InputManager) getCursorPosComp(
+	world *ecs.World,
+	componentAccess *components.ComponentAccess,
+) *components.PositionComponent {
+	// Get the cursor
+	cursorEnts := world.ComponentManager.GetAllEntitiesWithComponent(components.Cursor)
+	if len(cursorEnts) != 1 {
+		return nil
+	}
+	cursorEnt := cursorEnts[0]
+
+	// Get the cursor position
+	cursorPos, _ := componentAccess.GetPositionComponent(cursorEnt)
+
+	return cursorPos
 }

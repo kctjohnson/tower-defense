@@ -28,6 +28,10 @@ func (c *ComponentAccess) GetDisplayComponent(entity ecs.Entity) (*DisplayCompon
 	return GetComponentT[*DisplayComponent](c.world, entity, Display)
 }
 
+func (c *ComponentAccess) GetCursorComponent(entity ecs.Entity) (*CursorComponent, bool) {
+	return GetComponentT[*CursorComponent](c.world, entity, Cursor)
+}
+
 func (c *ComponentAccess) GetGameStateComponent(entity ecs.Entity) (*GameStateComponent, bool) {
 	return GetComponentT[*GameStateComponent](c.world, entity, GameState)
 }
